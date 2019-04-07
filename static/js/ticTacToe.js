@@ -14,19 +14,50 @@ const linesIds = [
     ['sq-2', 'sq-4', 'sq-6'],
 ];
 
+
+const lines = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+];
+
+// winner message
+const winnerMessage = winner => {
+  // show winning message
+  console.log(`${winner} is the winner!`);
+
+  // freeze gameboard so no more items click
+  removeListener();
+
+  // reset gameboard
+  // reset();
+};
+
+// change box color for the three that match
+
+
+// reset gameboard
+
+
 // logic to select winner
-function checkForWinner(squareId, mark, lines) {
+function checkForWinner(boardArr, lines) {
+  let winner;
+  for (let i = 0; i < lines.length; i++) {
+    const [a, b, c] = lines[i];
+    console.log(`winning trio ${a} ${b} ${c}`);
 
-
-//   for (let i = 0; i < lines.length; i++) {
-//     const [a, b, c] = lines[i];
-//     if (squareId[a] && squareId[a] === squareId[b] && squareId[a] === squareId[c]) {
-//       return console.log(squareId[a]);
-//     }
-//         // console.log(a);
-
-//   }
-//   return null;
+    if (boardArr[a] && boardArr[a] === boardArr[b] && boardArr[a] === boardArr[c]) {
+      winner = boardArr[a];
+      return  winnerMessage(winner);
+    }
+    // console.log(a);
+  }
+  return null;
 }
 
 
@@ -60,31 +91,28 @@ const addXO = (e) => {
 
     boardArr.forEach(square => {
       if(squareId === square) {
-        // console.log(square);
-        // console.log(squareId);
+
         let match = boardArr.indexOf(square);
         boardArr.splice(match, 1, mark);
-        // console.log(boardArr);
       }
     });
-    // console.log(baordArr);
 
   // toggle turn
     xTurn = !xTurn;
   // highlight x or o in the DOM
     whoseTurn();
-  console.log(boardArr);
   // check for match
-    checkForWinner(squareId, mark, lines, pickedArr);
+    checkForWinner(boardArr, lines);
 }
 
 const addListener =  () => {
   allSquares.addEventListener('click', addXO);
 }
 
-// const removeListener = () => {
-//   allSquares.removeEventListener('click', addXO);
-// }
+// Freeze the gameboard
+const removeListener = () => {
+  allSquares.removeEventListener('click', addXO);
+}
 
 
 // Make the game board
@@ -100,13 +128,3 @@ const gameBoard = (() => {
   addListener();
 })();
 
-// const lines = [
-//     [0, 1, 2],
-//     [3, 4, 5],
-//     [6, 7, 8],
-//     [0, 3, 6],
-//     [1, 4, 7],
-//     [2, 5, 8],
-//     [0, 4, 8],
-//     [2, 4, 6],
-// ];
